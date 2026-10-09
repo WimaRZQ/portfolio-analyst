@@ -1,43 +1,54 @@
-# BRIEF — Dashboard Performa Kurir (tren 1–8 Okt 2026)
+# BRIEF — Studi Kasus: Paket Beralamat Kode & Risiko COD
 
-## Tujuan dashboard
-Monitoring harian performa 55 kurir (12 Dedicated, 43 Mitra) hub Cinere:
-volume, delivery rate, dan failed — per tanggal, zona, dan driver.
-Data: snapshot 8 Okt 2026 siang, 36.832 paket, 358 baris (tanggal x driver),
-sudah dianonimkan (Driver_ID). File: `data/hourly_trend_01_08okt_anonim.csv`
-kolom: ofd_date, Driver_ID, Zone, Tipe, total, delivered, ongoing, failed.
+## Konteks bisnis
+Seller memasukkan paket dengan alamat berkode (kode MA/SK) — format alamat tidak
+standar sehingga berisiko salah antar dan gagal bayar COD. Penulis (Last Mile
+Logistic Officer, hub Cinere) menyusun rekap per batch untuk invoice/settlement
+COD ke seller. Studi ini menganalisis 5 batch (Agu–Okt 2026).
 
-## Struktur Excel yang diminta (dashboard interaktif)
-1. **Sheet "Dashboard"**: judul + tanggal update; dropdown pilih tanggal
-   (data validation dari daftar 1–8 Okt); KPI cards pakai rumus
-   (Total Paket, Delivered, Ongoing, Failed, Delivery Rate %) yang merespons
-   dropdown; tabel ranking zona; chart volume harian; chart rate per zona.
-2. **Sheet "Data"**: 358 baris dataset (paste dari CSV), header difreeze.
-3. **Sheet "Ringkasan Driver"**: tabel per Driver_ID (total 8 hari, rate)
-   pakai rumus dari sheet Data; conditional formatting merah untuk rate <90%.
+## Data (sudah dianonimkan — no resi asli, no nama kurir asli)
+- 874 paket, total COD Rp140.890.220, 5 batch
+- Kolom: Batch, Package_ID (anonim), Driver_ID (anonim), Shipment_Status,
+  OFD_Time, Buyer_District, COD_Amount
+- Batch 5 Okt 2026 di-join dengan report harian untuk outcome aktual per 8 Okt
 
-## Angka kunci (terverifikasi, untuk KPI default = 8 hari)
-- Total paket 36.832; delivered 34.173; ongoing 2.616; failed 43
-- Volume harian: 1 Okt 4.501 | 2 Okt 4.857 | 3 Okt 4.251 | 4 Okt 4.322 |
-  5 Okt 3.369 (Minggu, terendah) | 6 Okt 5.464 (Senin, tertinggi) |
-  7 Okt 5.336 | 8 Okt 4.732 (data s/d siang — ongoing masih jalan)
-- Delivery rate zona (1–7 Okt, hari selesai): terendah Pangkalan Jati Baru
-  90,9% ... tertinggi CINERE 93,7%. Selisih hanya 2,8 poin — performa merata.
-- Driver (min 200 paket, 1–7 Okt): terendah DRV_25 86,8% (400 paket);
-  tertinggi 3 driver 100% (DRV_45 654 paket, DRV_49, DRV_57).
-- Failed 43 semuanya di 8 Okt (hari berjalan) — wajar, paket hari
-  sebelumnya sudah teresolusi.
+## Temuan kunci (angka final, terverifikasi)
+1. **Eksposur COD Rp140,89 jt dari 874 paket** (5 batch, Agu–Okt 2026).
+   Rata-rata Rp161.202/paket, median Rp136.912/paket.
+2. **Batch 10 Agustus dominan**: 593 paket (67,9%), COD Rp80,30 jt (57,0%).
+3. **Batch 28 September kecil tapi bernilai tinggi**: hanya 9 paket, COD Rp9,47 jt
+   — rata-rata Rp1.052.257/paket (±7,7x rata-rata keseluruhan). Konsentrasi risiko.
+4. **Konsentrasi geografis ekstrem**: 843 dari 874 paket (96,5%) bertujuan ke
+   Kecamatan Limo. Pancoran Mas 28, Cinere 2, Beji 1.
+5. **Outcome batch 5 Okt 2026 (live tracking)**: 161 paket, COD Rp21,83 jt —
+   **100% delivered dalam 3 hari** (per 8 Okt 2026). Collection rate 100%.
+6. **Anomali**: 1 paket bernilai COD Rp0; 1 paket bernilai Rp1.332.660 (tertinggi).
+   Top-10 paket = 7,5% dari total nilai.
 
-## Insight untuk narasi dashboard
-- Pola mingguan jelas: Minggu drop (3.369), Senin spike (5.464) — implikasi
-  staffing & armada.
-- Gap zona kecil (2,8 poin) = SOP merata; fokus coaching ke driver
-  individual di bawah 90%, bukan ke zona.
-- 8 Okt ongoing 2.616 paket = angka yang dimonitor real-time sore ini.
+## Insight
+- Pola batch tidak merata: batch besar (10 Agu) vs batch kecil bernilai tinggi
+  (28 Sep) butuh perlakuan monitoring berbeda.
+- Konsentrasi 96,5% di satu kecamatan = rute padat, efisien untuk dedicated run,
+  tapi single-point-of-failure bila ada gangguan area.
+- Rekap per batch + join ke report harian memungkinkan settlement COD
+  terverifikasi (bukti 100% collection batch 5 Okt).
 
-## Chart referensi (folder ini)
-- chart_01_volume.png, chart_02_zona.png, chart_03_driver.png
+## Rekomendasi
+1. **Prioritaskan batch bernilai tinggi** (seperti 28 Sep): eskalasi same-day
+   follow-up untuk paket COD >Rp500 rb.
+2. **Rute khusus Limo** untuk paket kode: mengingat 96,5% konsentrasi, dedicated
+   run mengurangi risiko salah antar alamat berkode.
+3. **Checklist anomali pra-invoice**: tandai otomatis paket COD Rp0 dan outlier
+   >3x median sebelum invoice dikirim ke seller.
+4. **Rekonsiliasi rutin**: join rekap batch vs report harian (seperti metode studi
+   ini) sebagai SOP settlement, bukan manual cek satu-satu.
+
+## Chart (di folder ini, embed ke PDF)
+- chart_01_tren_batch.png — tren volume vs nilai COD per batch
+- chart_02_distribusi_cod.png — distribusi COD per paket + garis median
+- chart_03_distrik.png — konsentrasi kecamatan tujuan
+- chart_04_outcome_okt.png — outcome 100% delivered batch 5 Okt
 
 ## Atribusi
-Wima Rizqullah — Last Mile Logistic Officer. Tools: Python (pandas),
-Excel (SUMIFS, data validation, conditional formatting).
+Penulis: Wima Rizqullah — Last Mile Logistic Officer (pivot ke Data/Ops Analyst).
+Tools: Python (pandas, matplotlib), Excel. Data: operasional hub Cinere, dianonimkan.
