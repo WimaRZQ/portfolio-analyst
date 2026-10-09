@@ -1,51 +1,43 @@
-# Studi Kasus: Paket Beralamat Kode & Risiko COD
+# Dashboard Performa Kurir per Zona
 
 ## Latar
 
-Sebagian seller e-commerce mengirim paket dengan **alamat tujuan berupa kode**
-(contoh: "BLOK MA", "BLOK SK"), bukan alamat jalan asli. Kode ini hanya
-dikenali oleh pihak internal — kurir yang tidak hafal daerahnya berisiko
-salah antar (misroute), paket gagal terkirim berulang, dan nilai COD yang
-dibawa kurir ikut berisiko.
+Hub last-mile dengan 55 kurir (12 dedicated, 43 mitra) di 8 zona membutuhkan
+pantauan harian: berapa paket ter-pickup, terkirim, masih jalan, dan gagal —
+per zona dan per kurir — agar masalah terdeteksi sebelum jadi klaim.
 
-Di hub ini, pola alamat kode teridentifikasi pada seller dengan volume tinggi:
-paket dikumpulkan di runsheet admin lalu dialokasikan ke kurir — dalam satu
-kasus, **151 paket dialokasikan ke satu kurir sekaligus**.
+Laporan ini dibangun dari data shipment mentah harian yang diolah menjadi
+laporan hourly (Excel + visual) yang dibagikan ke grup operasional 3x sehari.
 
 ## Pertanyaan
 
-1. Seberapa besar nilai COD yang berisiko pada batch paket beralamat kode?
-2. Bagaimana pola misroute terjadi pada paket-paket ini?
-3. Rekomendasi operasional apa yang mengurangi risiko failed & COD macet?
+1. Zona mana yang performanya paling rendah hari ini, dan kenapa?
+2. Kurir mana yang jauh di bawah rata-rata (butuh coaching / redistribusi)?
+3. Berapa beban ongoing yang dibawa ke shift berikutnya?
 
-## Temuan (terverifikasi dari data)
+## Temuan (snapshot 8 Okt 2026, 18.682 shipment roster, data s/d ~14:23 WIB)
 
-| Batch | Paket | Total COD (Rp) |
-|-------|------:|---------------:|
-| 5 Agustus 2026 | 81 | 25.029.621 |
-| 10 Agustus 2026 | 593 | 80.302.609 |
-| 8 September 2026 | 30 | 4.254.525 |
-| 28 September 2026 | 9 | 9.470.314 |
-| 5 Oktober 2026 | 161 | 21.833.151 |
-| **Total 5 batch** | **874** | **140.890.220** |
+| Zona | Pickup | Delivered | Ongoing | Failed |
+|------|-------:|----------:|--------:|-------:|
+| CINERE | 3.460 | 3.022 | 429 | 9 |
+| GANDUL | 1.865 | 1.615 | 250 | 0 |
+| Grogol | 3.506 | 3.028 | 467 | 11 |
+| Krukut | 2.306 | 1.953 | 345 | 8 |
+| Limo | 1.694 | 1.451 | 237 | 6 |
+| Meruyung | 2.215 | 1.903 | 304 | 8 |
+| Pangkalan Jati Baru | 1.803 | 1.485 | 317 | 1 |
+| Pangkalan Jati Lama | 1.833 | 1.567 | 266 | 0 |
 
-- Identifikasi paket kode: 100% paket seller terkait (non-cancel) memakai pola
-  alamat kode — terkonfirmasi dari pencocokan manual dengan info CS.
-- Data report 8 Okt 2026: 51 paket seller terkait terdeteksi, 47 sudah
-  delivered, 4 masih out-for-delivery.
-- Contoh misroute: paket tujuan Limo/Meruyung ter-assign ke kurir zona Grogol.
+- 9 kurir berstatus OFF (tanpa pickup) pada snapshot ini.
+- Tidak ada zona dengan failed di atas 11; tidak ada kurir dengan failed di
+  atas 5 pada snapshot ini.
+- Paket aging (OFD sudah ganti hari & belum delivered): **0** — semua paket
+  hari sebelumnya sudah clear.
 
-> TODO (sesi 9 Okt): breakdown status per batch, analisis pola misroute per
-> zona, hitung estimasi COD tertahan, tulis rekomendasi operasional.
-
-## Rekomendasi
-
-> TODO (sesi 9 Okt): ditulis bareng — kandidat: daftar pemetaan kode → titik
-> antar aktual, assign ke kurir zona yang hafal daerah, checklist verifikasi
-> sebelum alokasi massal.
+> TODO (sesi 9 Okt): pilih visual (heatmap zona / bar chart per kurir),
+> tambah tren harian kalau data multi-hari dipakai, tulis insight + action plan.
 
 ## Data
 
-`../data/boman_mask_05agustus_anonim.csv`, `../data/boman_mask_10agustus_anonim.csv`,
-`../data/boman_mask_08september_anonim.csv`, `../data/boman_mask_28september_anonim.csv`,
-`../data/boman_mask_05oktober_anonim.csv` — kolom: `Package_ID`, `COD_amount`.
+`../data/report_08okt2026_anonim.csv` (kolom terpilih, ID anonim) +
+`../data/roster_kurir_anonim.csv` (`Driver_ID` → `Zone`, `Tipe`).
