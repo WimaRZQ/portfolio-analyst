@@ -1,0 +1,88 @@
+{
+  "driver_unik": 58,
+  "roster": 55,
+  "boman_mask_10agustus_anonim.csv": {
+    "paket": 593,
+    "total_cod": 80302609
+  },
+  "boman_mask_08september_anonim.csv": {
+    "paket": 30,
+    "total_cod": 4254525
+  },
+  "boman_mask_05oktober_anonim.csv": {
+    "paket": 161,
+    "total_cod": 21833151
+  },
+  "report_8okt": {
+    "baris_total": 18888,
+    "baris_roster": 18682,
+    "per_zona": [
+      {
+        "Zone": "CINERE",
+        "total": 3460,
+        "delivered": 3022,
+        "ongoing": 429,
+        "failed": 9
+      },
+      {
+        "Zone": "GANDUL",
+        "total": 1865,
+        "delivered": 1615,
+        "ongoing": 250,
+        "failed": 0
+      },
+      {
+        "Zone": "Grogol",
+        "total": 3506,
+        "delivered": 3028,
+        "ongoing": 467,
+        "failed": 11
+      },
+      {
+        "Zone": "Krukut",
+        "total": 2306,
+        "delivered": 1953,
+        "ongoing": 345,
+        "failed": 8
+      },
+      {
+        "Zone": "Limo",
+        "total": 1694,
+        "delivered": 1451,
+        "ongoing": 237,
+        "failed": 6
+      },
+      {
+        "Zone": "Meruyung",
+        "total": 2215,
+        "delivered": 1903,
+        "ongoing": 304,
+        "failed": 8
+      },
+      {
+        "Zone": "Pangkalan Jati Baru",
+        "total": 1803,
+        "delivered": 1485,
+        "ongoing": 317,
+        "failed": 1
+      },
+      {
+        "Zone": "Pangkalan Jati Lama",
+        "total": 1833,
+        "delivered": 1567,
+        "ongoing": 266,
+        "failed": 0
+      }
+    ],
+    "seller_zwitsal": 51
+  },
+  "tanggal_data": "2026-10-08",
+  "boman_mask_28september_anonim.csv": {
+    "paket": 9,
+    "total_cod": 9470314
+  },
+  "boman_mask_05agustus_anonim.csv": {
+    "paket": 81,
+    "total_cod": 25029621
+  }
+}
